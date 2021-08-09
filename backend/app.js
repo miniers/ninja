@@ -99,7 +99,7 @@ router.post('/api/update/remark', body(), async (ctx) => {
   const remark = body.remark;
   const user = new User({ eid, remark });
   const data = await user.updateRemark();
-  ctx.body = { data };
+  ctx.body = { code: 200,data }; 
 });
 
 router.get('/api/users', async (ctx) => {

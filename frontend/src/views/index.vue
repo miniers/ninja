@@ -14,6 +14,18 @@
           >删除账号</el-button
         >
       </div>
+    </div>    
+    <div class="card">
+      <div class="card-header">
+        <p class="card-title">备注</p>
+        <span class="card-subtitle"> 备注用于识别用户，强烈建议配置。 </span>
+      </div>
+      <div class="card-body">
+        <p><el-input v-model="remark" placeholder="请输入备注"></el-input></p>
+      </div>
+      <div class="card-footer">
+        <el-button size="small" auto @click="saveRemark">保存</el-button>
+      </div>
     </div>
 
     <div class="card">
@@ -45,7 +57,7 @@
 </template>
 
 <script>
-import { getUserInfoAPI, delAccountAPI } from '@/api/index'
+import { getUserInfoAPI, delAccountAPI, saveRemarkAPI } from '@/api/index'
 import { onMounted, reactive, toRefs } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
@@ -57,6 +69,7 @@ export default {
     let data = reactive({
       nickName: undefined,
       timestamp: undefined,
+      remark: undefined,
     })
 
     const getInfo = async () => {
@@ -72,6 +85,7 @@ export default {
         return
       }
       data.nickName = userInfo.data.nickName
+      data.remark = userInfo.data.remark
       data.timestamp = new Date(userInfo.data.timestamp).toLocaleString()
     }
 
@@ -92,6 +106,16 @@ export default {
         setTimeout(() => {
           logout()
         }, 1000)
+      }
+    }
+
+    const saveRemark = async ()=>{
+      const eid = localStorage.getItem('eid')
+      const body = await saveRemarkAPI({eid,remark:data.remark})
+      if (body.code !== 200) {
+        ElMessage.error(body.message)
+      } else {
+        ElMessage.success(body.message)
       }
     }
 
@@ -164,6 +188,7 @@ export default {
       activity,
       getInfo,
       logout,
+      saveRemark,
       delAccount,
       openUrlWithJD,
     }
