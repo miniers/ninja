@@ -18,7 +18,7 @@
     <div class="card">
       <div class="card-header">
         <p class="card-title">备注</p>
-        <span class="card-subtitle"> 备注用于识别用户，强烈建议配置。 </span>
+        <span class="card-subtitle"> 备注用于识别你是谁，强烈建议设置。 </span>
       </div>
       <div class="card-body">
         <p><el-input v-model="remark" placeholder="请输入备注"></el-input></p>

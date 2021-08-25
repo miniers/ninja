@@ -40,8 +40,7 @@ module.exports = class User {
     this.cookie = cookie;
     this.eid = eid;
     this.remark = remark;
-    this.ua = ua;
-
+    this.ua = ua || process.env.NINJA_UA || GET_RANDOM_TIME_UA();
     if (pt_key && pt_pin) {
       this.cookie = 'pt_key=' + this.pt_key + ';pt_pin=' + this.pt_pin + ';';
     }
@@ -57,7 +56,6 @@ module.exports = class User {
   }
 
   async getQRConfig() {
-    this.ua = this.ua || process.env.NINJA_UA || GET_RANDOM_TIME_UA();
     const taskUrl = `https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=${Date.now()}&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport`;
     const response = await api({
       url: taskUrl,
@@ -284,8 +282,7 @@ module.exports = class User {
         Connection: 'keep-alive',
         Cookie: this.cookie,
         Referer: 'https://home.m.jd.com/myJd/newhome.action',
-        'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+        'User-Agent': this.ua,
         Host: 'me-api.jd.com',
       },
     }).json();
